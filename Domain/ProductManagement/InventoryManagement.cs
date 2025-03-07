@@ -104,7 +104,38 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void ViewProducts(Inventory inventory)
         {
-            Console.WriteLine("Not Implemented");
+            List<Product> products = inventory.GetAllProducts();
+
+            if (products.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("No products in inventory.");
+                Console.ResetColor();
+                return;
+            }
+            Console.WriteLine("All Products:");
+
+            Console.WriteLine(new string('=', 50));
+            Console.WriteLine("| {0,-20} | {1,10} | {2,10} |", "Name", "Price", "Quantity");
+            Console.WriteLine(new string('=', 50));
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                Product product = products[i];
+                Console.WriteLine("| {0,-20} | {1,10:C} | {2,10} |", product.Name, product.Price, product.Quantity);
+
+                if (i < products.Count - 1)
+                {
+                    Console.WriteLine(new string('-', 50));
+                }
+            }
+
+            Console.WriteLine(new string('=', 50));
+            Console.WriteLine($"Total Products: {products.Count}\n");
+
+            Console.WriteLine("Press Enter to go back...");
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void EditProduct(Inventory inventory)
