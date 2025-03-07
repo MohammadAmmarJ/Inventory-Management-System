@@ -37,7 +37,8 @@ namespace Inventory_Management_System.Domain.ProductManagement
                     case "5":
                         SearchProduct(inventory); break;
                     case "6":
-                        Console.WriteLine("Not implemented"); break;
+                        Console.WriteLine("Exiting...");
+                        return;
 
 
                     default:
@@ -152,9 +153,9 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
             Console.WriteLine(">>> Edit a Product <<<");
             Console.WriteLine("Enter product name to edit: ");
-            string name = Console.ReadLine().Trim();
+            string name = Console.ReadLine()!.Trim();
 
-            Product product = inventory.FindProductByName(name);
+            Product? product = inventory.FindProductByName(name);
             if(product == null)
             {
                 Console.Clear();
@@ -172,12 +173,12 @@ namespace Inventory_Management_System.Domain.ProductManagement
             Console.WriteLine(new string('=', 50));
 
             Console.Write("Enter new name (leave blank to keep current): ");
-            string newName = Console.ReadLine().Trim();
+            string newName = Console.ReadLine()!.Trim();
             if (!string.IsNullOrEmpty(newName))
                 product.Name = newName;
 
             Console.Write("Enter new price (leave blank to keep current): ");
-            string priceInput = Console.ReadLine().Trim();
+            string priceInput = Console.ReadLine()!.Trim();
 
             if(!string.IsNullOrEmpty(priceInput))
             {
@@ -189,14 +190,14 @@ namespace Inventory_Management_System.Domain.ProductManagement
                     Console.ResetColor();
 
                     Console.Write("Enter new price: ");
-                    priceInput = Console.ReadLine().Trim();
+                    priceInput = Console.ReadLine()!.Trim();
 
                 }
                 product.Price = newPrice;
             }
 
             Console.Write("Enter new quantity (leave blank to keep current): ");
-            string quantityInput = Console.ReadLine().Trim();
+            string quantityInput = Console.ReadLine()!.Trim();
 
             if (!string.IsNullOrEmpty(quantityInput))
             {
@@ -208,7 +209,7 @@ namespace Inventory_Management_System.Domain.ProductManagement
                     Console.ResetColor();
 
                     Console.Write("Enter new quantity: ");
-                    quantityInput = Console.ReadLine().Trim();
+                    quantityInput = Console.ReadLine()!.Trim();
 
                 }
                 product.Quantity = newquantity;
@@ -231,7 +232,7 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
             Console.WriteLine(">>> Delete a Product <<<");
             Console.Write("Enter product name to delete: ");
-            string name = Console.ReadLine().Trim();
+            string name = Console.ReadLine()!.Trim();
 
             bool success = inventory.RemoveProduct(name);
             if (success)
@@ -263,7 +264,7 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
             Console.WriteLine(">>> Search For a Product <<<");
             Console.WriteLine("Enter product name: ");
-            string name = Console.ReadLine().Trim();
+            string name = Console.ReadLine()!.Trim();
 
             Product? product = inventory.FindProductByName(name);
             if(product != null)
