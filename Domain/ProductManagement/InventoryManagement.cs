@@ -140,7 +140,79 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void EditProduct(Inventory inventory)
         {
-            Console.WriteLine("Not Implemented");
+            if(inventory.GetAllProducts().Count==0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("The inventory is empty. No products to edit.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine("Edit a product");
+            Console.WriteLine("Enter product name to edit: ");
+            string name = Console.ReadLine().Trim();
+
+            Product product = inventory.FindProductByName(name);
+            if(product == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Product not found.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine("Current details: ");
+            Console.WriteLine(new string('=', 50));
+            Console.WriteLine("| {0,-20} | {1,10} | {2,10} |", "Name", "Price", "Quantity");
+            Console.WriteLine(new string('=', 50));
+            Console.WriteLine("| {0,-20} | {1,10:C} | {2,10} |", product.Name, product.Price, product.Quantity);
+            Console.WriteLine(new string('=', 50));
+
+            Console.Write("Enter new name (leave blank to keep current): ");
+            string newName = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(newName))
+                product.Name = newName;
+
+            Console.Write("Enter new price (leave blank to keep current): ");
+            string priceInput = Console.ReadLine().Trim();
+
+            if(!string.IsNullOrEmpty(priceInput))
+            {
+                double newPrice;
+                while (!double.TryParse(priceInput, out newPrice) || newPrice < 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid price.");
+                    Console.ResetColor();
+
+                    Console.Write("Enter new price: ");
+                    priceInput = Console.ReadLine().Trim();
+
+                }
+                product.Price = newPrice;
+            }
+
+            Console.Write("Enter new quantity (leave blank to keep current): ");
+            string quantityInput = Console.ReadLine().Trim();
+
+            if (!string.IsNullOrEmpty(quantityInput))
+            {
+                int newquantity;
+                while (!int.TryParse(quantityInput, out newquantity) || newquantity < 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid quantity.");
+                    Console.ResetColor();
+
+                    Console.Write("Enter new quantity: ");
+                    priceInput = Console.ReadLine().Trim();
+
+                }
+                product.Quantity = newquantity;
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Product updated successfully.");
+            Console.ResetColor();
         }
 
         public void DeleteProduct(Inventory inventory)

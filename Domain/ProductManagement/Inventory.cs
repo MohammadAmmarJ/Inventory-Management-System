@@ -15,9 +15,22 @@ namespace Inventory_Management_System.Domain.ProductManagement
             products.Add(product);
         }
 
+        public Product? FindProductByName(string name)
+        {
+            foreach (var product in products)
+            {
+                if (product.Name.Equals(name,StringComparison.OrdinalIgnoreCase))
+                {
+                    return product;
+                }
+            }
+            return null;
+        }
+
         public List<Product> GetAllProducts()
         {
             return new List<Product>(products);
         }
+
     }
 }
