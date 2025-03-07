@@ -15,6 +15,17 @@ namespace Inventory_Management_System.Domain.ProductManagement
             products.Add(product);
         }
 
+        public bool RemoveProduct(string productName)
+        {
+            Product? product = FindProductByName(productName);
+            if (product != null)
+            {
+                products.Remove(product);
+                return true;
+            }
+            return false;
+        }
+
         public Product? FindProductByName(string name)
         {
             foreach (var product in products)

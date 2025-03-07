@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -217,7 +218,24 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void DeleteProduct(Inventory inventory)
         {
-            Console.WriteLine("Not Implemented");
+            Console.WriteLine("Delete a product");
+            Console.Write("Enter product name to delete: ");
+            string name = Console.ReadLine().Trim();
+
+            bool success = inventory.RemoveProduct(name);
+            if (success)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Product deleted successfully.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Product not found.");
+                Console.ResetColor();
+            }
+
         }
 
         public void SearchProduct(Inventory inventory)
