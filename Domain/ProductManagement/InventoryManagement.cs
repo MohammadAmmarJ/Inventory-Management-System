@@ -51,7 +51,55 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void AddProduct(Inventory inventory)
         {
-            Console.WriteLine("Not Implemented");
+            string? name;
+            double price;
+            int quantity;
+            do
+            {
+                Console.Write("Enter product name: ");
+                name = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("The product name is required.");
+                    Console.ResetColor();
+                }
+                else if (inventory.GetAllProducts().Any(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("A product with this name already exists. Please enter a unique name.");
+                    Console.ResetColor();
+                    name = null;
+                }
+            } while (string.IsNullOrWhiteSpace(name));
+
+            while (true)
+            {
+                Console.Write("Enter product price: ");
+                if (double.TryParse(Console.ReadLine(), out price) && price > 0)
+                    break;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid price.");
+                Console.ResetColor();
+            }
+
+            while (true)
+            {
+                Console.Write("Enter product quantity: ");
+                if (int.TryParse(Console.ReadLine(), out quantity) && quantity > 0)
+                    break;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid quantity.");
+                Console.ResetColor();
+            }
+
+            Product product = new Product(name, price, quantity);
+            inventory.AddProduct(product);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Product added successfully!");
+            Console.ResetColor();
         }
 
         public void ViewProducts(Inventory inventory)
