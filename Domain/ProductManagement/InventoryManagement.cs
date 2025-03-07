@@ -27,7 +27,6 @@ namespace Inventory_Management_System.Domain.ProductManagement
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine(">>> Add a New Product <<<");
                         AddProduct(inventory); break;
                     case "2":
                         ViewProducts(inventory); break;
@@ -57,6 +56,7 @@ namespace Inventory_Management_System.Domain.ProductManagement
             int quantity;
             do
             {
+                Console.WriteLine(">>> Add a New Product <<<");
                 Console.Write("Enter product name: ");
                 name = Console.ReadLine();
 
@@ -114,6 +114,7 @@ namespace Inventory_Management_System.Domain.ProductManagement
                 Console.ResetColor();
                 return;
             }
+            Console.WriteLine(">>> View All Products <<<");
             Console.WriteLine("All Products:");
 
             Console.WriteLine(new string('=', 50));
@@ -149,19 +150,20 @@ namespace Inventory_Management_System.Domain.ProductManagement
                 return;
             }
 
-            Console.WriteLine("Edit a product");
+            Console.WriteLine(">>> Edit a Product <<<");
             Console.WriteLine("Enter product name to edit: ");
             string name = Console.ReadLine().Trim();
 
             Product product = inventory.FindProductByName(name);
             if(product == null)
             {
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Product not found.");
                 Console.ResetColor();
                 return;
             }
-
+            Console.Clear();
             Console.WriteLine("Current details: ");
             Console.WriteLine(new string('=', 50));
             Console.WriteLine("| {0,-20} | {1,10} | {2,10} |", "Name", "Price", "Quantity");
@@ -206,11 +208,12 @@ namespace Inventory_Management_System.Domain.ProductManagement
                     Console.ResetColor();
 
                     Console.Write("Enter new quantity: ");
-                    priceInput = Console.ReadLine().Trim();
+                    quantityInput = Console.ReadLine().Trim();
 
                 }
                 product.Quantity = newquantity;
             }
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Product updated successfully.");
             Console.ResetColor();
@@ -218,20 +221,30 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void DeleteProduct(Inventory inventory)
         {
-            Console.WriteLine("Delete a product");
+            if (inventory.GetAllProducts().Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("The inventory is empty. No products to delete.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine(">>> Delete a Product <<<");
             Console.Write("Enter product name to delete: ");
             string name = Console.ReadLine().Trim();
 
             bool success = inventory.RemoveProduct(name);
             if (success)
             {
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Product deleted successfully.");
                 Console.ResetColor();
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Product not found.");
                 Console.ResetColor();
             }
@@ -240,7 +253,44 @@ namespace Inventory_Management_System.Domain.ProductManagement
 
         public void SearchProduct(Inventory inventory)
         {
-            Console.WriteLine("Not Implemented");
+            if (inventory.GetAllProducts().Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("The inventory is empty. No products to search.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine(">>> Search For a Product <<<");
+            Console.WriteLine("Enter product name: ");
+            string name = Console.ReadLine().Trim();
+
+            Product? product = inventory.FindProductByName(name);
+            if(product != null)
+            {
+                Console.Clear();
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Product found:");
+                Console.ResetColor();
+
+                Console.WriteLine(new string('=', 50));
+                Console.WriteLine("| {0,-20} | {1,10} | {2,10} |", "Name", "Price", "Quantity");
+                Console.WriteLine(new string('=', 50));
+                Console.WriteLine("| {0,-20} | {1,10:C} | {2,10} |", product.Name, product.Price, product.Quantity);
+                Console.WriteLine(new string('=', 50));
+
+                Console.WriteLine("\nPress Enter to go back...");
+                Console.ReadLine();
+                Console.Clear();
+            }
+            else
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Product not found.");
+                Console.ResetColor();
+            }
         }
     }
 }
